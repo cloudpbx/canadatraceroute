@@ -1,0 +1,152 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="tubeMap.css">
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://unpkg.com/d3-tube-map@latest/dist/d3-tube-map.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div id="tube-map">
+  </div>
+  <script>
+
+    //Create the same data structure for d3-map-tube
+      const dataHops = [{hop: 1, rtt: 10, ip: '192.168.0.1'}, {hop: 2, rtt: 20, ip: '192.168.0.10'}, {hop: 3, rtt: 30, ip: '192.168.0.100'}]
+    //Declare empty Object 
+    const NewObject ={}
+    //Map through the hop data 
+    const Map = dataHops.map((dataHop,index) =>{ 
+    //Pass the index as an argument in order to use later as the key in the object
+        const i = index +1
+        NewObject[i]= {}
+        NewObject[i].label = dataHop.hop
+        return NewObject 
+    });
+    console.log(NewObject)
+
+    const Lines =[{
+        "name":"line",
+        "color": "#FF0000",
+        "shiftCoords": [0, 0],
+        "node":[]
+    }]
+
+    const mapTwo =dataHops.map((dataHop, index) => {
+        const i = index+1
+        const length = dataHops.length
+
+        const positionLine = Lines.map(Line  =>{
+            const position = 100 / length * i 
+            Lines[0].node[i] ={}
+            Lines[0].node[i].coords = position
+            Lines[0].node[i].name = i
+
+           
+
+
+
+        })
+
+
+    })
+    console.log(Lines[0].node)
+
+
+    const stations ={
+  "stations": {
+    "Hop1": {
+      "label": "Hop1:"
+    },
+    "Hop2": {
+      "label": "Hop2:"
+    },
+    "Hop3": {
+      "label": "Hop3:"
+    },
+    "Hop4": {
+      "label": "Hop4"
+    },
+  },
+  "lines": [
+    {
+      "name": "line A",
+      "color": "#FF0000",
+      "shiftCoords": [0, 0],
+      "nodes": [
+        {
+          "coords": [23, -4],
+          "name": "Hop1",
+          "labelPos": "N"
+        },
+        {
+          "coords": [70, -4]
+        },
+        {
+          "coords": [29, -4],
+          "dir": "N"
+        },
+        {
+          "coords": [30, -4],
+          "name": "Hop2",
+          "labelPos": "N"
+        },
+        {
+        "coords": [36, -4],
+          "name": "Hop3",
+          "labelPos": "N"
+        },
+        {
+        "coords": [70, -4],
+          "name": "Hop4",
+          "labelPos": "N"
+        },
+      ]
+    }
+  ]
+}
+  
+    var container = d3.select('#tube-map');
+    var width = 800;
+    var height =600;
+
+    var map = d3.tubeMap()
+      .width(width)
+      .height(height)
+      .margin({
+        top: 20,
+        right: 20,
+        bottom: 40,
+        left: 100,
+      })
+      .on("click", function (name) {
+        console.log(name);
+      });
+
+    
+      container
+        .datum(stations).call(map);
+
+      var svg = container.select('svg');
+
+      zoom = d3
+        .zoom()
+        .scaleExtent([0.5, 6])
+        .on('zoom', zoomed);
+
+      var zoomContainer = svg.call(zoom);
+      var initialScale = 2;
+      var initialTranslate = [100, 200];
+
+      zoom.scaleTo(zoomContainer, initialScale);
+      zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
+
+      function zoomed() {
+        svg.select('g').attr('transform', d3.event.transform.toString());
+      }
+    ;
+  </script>
+</body>
+
+</html>
