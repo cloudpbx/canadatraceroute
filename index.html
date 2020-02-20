@@ -13,7 +13,7 @@
   <script>
 
     //Create the same data structure for d3-map-tube
-      const dataHops = [{hop: 1, rtt: 10, ip: '192.168.0.1'}, {hop: 2, rtt: 20, ip: '192.168.0.10'}, {hop: 3, rtt: 30, ip: '192.168.0.100'}]
+      const dataHops = [{hop: 1, rtt: 10, ip: '192.168.0.1'}, {hop: 2, rtt: 20, ip: '192.168.0.10'}, {hop: 3, rtt: 30, ip: '192.168.0.100'},{hop: 4, rtt: 50, ip: '192.168.0.120'},{hop: 5, rtt: 60, ip: '192.168.0.120'},{hop: 6, rtt: 70, ip: '192.168.0.120'}]
     //Declare empty Object 
     const NewObject ={}
     //Map through the hop data 
@@ -21,7 +21,8 @@
     //Pass the index as an argument in order to use later as the key in the object
         const i = index +1
         NewObject[i]= {}
-        NewObject[i].label = dataHop.hop
+        //convert the hop in a string to use the ip adress as the label
+        NewObject[i].label = dataHop.ip.toString()
         return NewObject 
     });
     console.log(NewObject)
@@ -30,18 +31,21 @@
         "name":"line",
         "color": "#FF0000",
         "shiftCoords": [0, 0],
-        "node":[]
+        "nodes":[]
     }]
-
-    const mapTwo =dataHops.map((dataHop, index) => {
-        const i = index+1
+    const defaultPosition = 'N' 
+    // don't forget the 's' from nodes 
+    const mapTwo = dataHops.map((dataHop, index,) => {
+        const i = index
         const length = dataHops.length
 
         const positionLine = Lines.map(Line  =>{
             const position = 100 / length * i 
-            Lines[0].node[i] ={}
-            Lines[0].node[i].coords = position
-            Lines[0].node[i].name = i
+            Lines[0].nodes[i] ={}
+            Lines[0].nodes[i].coords = [position,-4]
+            //convert the index position in a string
+            Lines[0].nodes[i].name = (i+1).toString()
+            Lines[0].nodes[i].labelPos = defaultPosition
 
            
 
@@ -51,71 +55,112 @@
 
 
     })
-    console.log(Lines[0].node)
+  
+
+    const dataStructure ={}
+    dataStructure.stations = NewObject
+    dataStructure.lines = Lines
+    console.log(JSON.stringify(dataStructure))
 
 
-    const stations ={
-  "stations": {
-    "Hop1": {
-      "label": "Hop1:"
-    },
-    "Hop2": {
-      "label": "Hop2:"
-    },
-    "Hop3": {
-      "label": "Hop3:"
-    },
-    "Hop4": {
-      "label": "Hop4"
-    },
-  },
-  "lines": [
-    {
-      "name": "line A",
-      "color": "#FF0000",
-      "shiftCoords": [0, 0],
-      "nodes": [
-        {
-          "coords": [23, -4],
-          "name": "Hop1",
-          "labelPos": "N"
-        },
-        {
-          "coords": [70, -4]
-        },
-        {
-          "coords": [29, -4],
-          "dir": "N"
-        },
-        {
-          "coords": [30, -4],
-          "name": "Hop2",
-          "labelPos": "N"
-        },
-        {
-        "coords": [36, -4],
-          "name": "Hop3",
-          "labelPos": "N"
-        },
-        {
-        "coords": [70, -4],
-          "name": "Hop4",
-          "labelPos": "N"
-        },
-      ]
-    }
-  ]
-}
+
+
+
+//     const stations ={
+//   "stations": {
+//     "Hop1": {
+//       "label": "Hop1:"
+//     },
+//     "Hop2": {
+//       "label": "Hop2:"
+//     },
+//     "Hop3": {
+//       "label": "Hop3:"
+//     },
+//     "Hop4": {
+//       "label": "Hop4"
+//     },
+//     "Hop5": {
+//       "label": "Hop5"
+//     },
+//     "Hop6": {
+//       "label": "Hop6"
+//     },
+//     "Hop7": {
+//       "label": "Hop7"
+//     },
+
+//   },
+//   "lines": [
+//     {
+//       "name":"Line B",
+//       "color":"#808000",
+//       "shiftCoords": [0, 0],
+//       "nodes":[
+//       {
+//         "coords": [30, -10],
+//         "name": "Hop5",
+//         "labelPos": "N"
+//       },
+//       {
+//         "coords": [50, -10],
+//         "name": "Hop6",
+//         "labelPos": "N"
+//       },
+//       {
+//         "coords": [70, -10],
+//         "name": "Hop7",
+//         "labelPos": "N"
+//       },
+//       ]
+
+//     },
+//     {
+//       "name": "line A",
+//       "color": "#FF0000",
+//       "shiftCoords": [0, 0],
+//       "nodes": [
+//         {
+//           "coords": [10, -4],
+//           "name": "Hop1",
+//           "labelPos": "N"
+//         },
+//         {
+//           "coords": [30, -4]
+//         },
+//         {
+//           "coords": [30, -10],
+//           "dir": "N"
+//         },
+//         {
+//           "coords": [30, -4],
+//           "name": "Hop2",
+//           "labelPos": "N"
+//         },
+//         {
+//         "coords": [40, -4],
+//           "name": "Hop3",
+//           "labelPos": "N"
+//         },
+//         {
+//         "coords": [70, -4],
+//           "name": "Hop4",
+//           "labelPos": "N"
+//         },
+//       ]
+//     }
+//   ]
+// }
   
     var container = d3.select('#tube-map');
-    var width = 800;
-    var height =600;
+    var width = 1200;
+    var height = 900;
 
     var map = d3.tubeMap()
       .width(width)
       .height(height)
       .margin({
-        top: 20,
+        top: 300,
         right: 20,
         bottom: 40,
         left: 100,
@@ -126,7 +171,7 @@
 
     
       container
-        .datum(stations).call(map);
+        .datum(dataStructure).call(map);
 
       var svg = container.select('svg');
 
@@ -142,10 +187,10 @@
       zoom.scaleTo(zoomContainer, initialScale);
       zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
 
-      function zoomed() {
-        svg.select('g').attr('transform', d3.event.transform.toString());
-      }
-    ;
+    //   function zoomed() {
+    //     svg.select('g').attr('transform', d3.event.transform.toString());
+    //   }
+    // ;
   </script>
 </body>
 
