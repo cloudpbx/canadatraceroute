@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="tubeMap.css">
   <script src="https://d3js.org/d3.v5.js"></script>
   <script src="https://unpkg.com/d3-tube-map@latest/dist/d3-tube-map.js"></script>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
 </head>
 
@@ -25,7 +26,7 @@
         NewObject[i].label = dataHop.ip.toString()
         return NewObject 
     });
-    console.log(NewObject)
+    // console.log(NewObject)
 
     const Lines =[{
         "name":"line",
@@ -60,97 +61,97 @@
     const dataStructure ={}
     dataStructure.stations = NewObject
     dataStructure.lines = Lines
-    console.log(JSON.stringify(dataStructure))
+    // console.log(JSON.stringify(dataStructure))
 
 
 
 
 
-//     const stations ={
-//   "stations": {
-//     "Hop1": {
-//       "label": "Hop1:"
-//     },
-//     "Hop2": {
-//       "label": "Hop2:"
-//     },
-//     "Hop3": {
-//       "label": "Hop3:"
-//     },
-//     "Hop4": {
-//       "label": "Hop4"
-//     },
-//     "Hop5": {
-//       "label": "Hop5"
-//     },
-//     "Hop6": {
-//       "label": "Hop6"
-//     },
-//     "Hop7": {
-//       "label": "Hop7"
-//     },
+    const stations ={
+  "stations": {
+    "Hop1": {
+      "label": "Hop1:"
+    },
+    "Hop2": {
+      "label": "Hop2:"
+    },
+    "Hop3": {
+      "label": "Hop3:"
+    },
+    "Hop4": {
+      "label": "Hop4"
+    },
+    "Hop5": {
+      "label": "Hop5"
+    },
+    "Hop6": {
+      "label": "Hop6"
+    },
+    "Hop7": {
+      "label": "Hop7"
+    },
 
-//   },
-//   "lines": [
-//     {
-//       "name":"Line B",
-//       "color":"#808000",
-//       "shiftCoords": [0, 0],
-//       "nodes":[
-//       {
-//         "coords": [30, -10],
-//         "name": "Hop5",
-//         "labelPos": "N"
-//       },
-//       {
-//         "coords": [50, -10],
-//         "name": "Hop6",
-//         "labelPos": "N"
-//       },
-//       {
-//         "coords": [70, -10],
-//         "name": "Hop7",
-//         "labelPos": "N"
-//       },
-//       ]
+  },
+  "lines": [
+    {
+      "name":"Line B",
+      "color":"#808000",
+      "shiftCoords": [0, 0],
+      "nodes":[
+      {
+        "coords": [30, -10],
+        "name": "Hop5",
+        "labelPos": "N"
+      },
+      {
+        "coords": [50, -10],
+        "name": "Hop6",
+        "labelPos": "N"
+      },
+      {
+        "coords": [70, -10],
+        "name": "Hop7",
+        "labelPos": "N"
+      },
+      ]
 
-//     },
-//     {
-//       "name": "line A",
-//       "color": "#FF0000",
-//       "shiftCoords": [0, 0],
-//       "nodes": [
-//         {
-//           "coords": [10, -4],
-//           "name": "Hop1",
-//           "labelPos": "N"
-//         },
-//         {
-//           "coords": [30, -4]
-//         },
-//         {
-//           "coords": [30, -10],
-//           "dir": "N"
-//         },
-//         {
-//           "coords": [30, -4],
-//           "name": "Hop2",
-//           "labelPos": "N"
-//         },
-//         {
-//         "coords": [40, -4],
-//           "name": "Hop3",
-//           "labelPos": "N"
-//         },
-//         {
-//         "coords": [70, -4],
-//           "name": "Hop4",
-//           "labelPos": "N"
-//         },
-//       ]
-//     }
-//   ]
-// }
+    },
+    {
+      "name": "line A",
+      "color": "#FF0000",
+      "shiftCoords": [0, 0],
+      "nodes": [
+        {
+          "coords": [10, -4],
+          "name": "Hop1",
+          "labelPos": "N"
+        },
+        {
+          "coords": [30, -4]
+        },
+        {
+          "coords": [30, -10],
+          "dir": "N"
+        },
+        {
+          "coords": [30, -4],
+          "name": "Hop2",
+          "labelPos": "N"
+        },
+        {
+        "coords": [40, -4],
+          "name": "Hop3",
+          "labelPos": "N"
+        },
+        {
+        "coords": [70, -4],
+          "name": "Hop4",
+          "labelPos": "N"
+        },
+      ]
+    }
+  ]
+}
   
     var container = d3.select('#tube-map');
     var width = 1200;
@@ -171,27 +172,38 @@
 
     
       container
-        .datum(dataStructure).call(map);
+        .datum(stations).call(map);
 
       var svg = container.select('svg');
 
-      zoom = d3
-        .zoom()
-        .scaleExtent([0.5, 6])
-        .on('zoom', zoomed);
+      // zoom = d3
+      //   .zoom()
+      //   .scaleExtent([0.5, 6])
+      //   .on('zoom', zoomed);
 
-      var zoomContainer = svg.call(zoom);
+      // var zoomContainer = svg.call(zoom);
       var initialScale = 2;
       var initialTranslate = [100, 200];
 
-      zoom.scaleTo(zoomContainer, initialScale);
-      zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
+      // zoom.scaleTo(zoomContainer, initialScale);
+      // zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
 
     //   function zoomed() {
     //     svg.select('g').attr('transform', d3.event.transform.toString());
     //   }
     // ;
+    // axios.fetch('http://127.0.0.1:5000/')
+    // .then( response => {
+    //   console.log(response.todos)
+    // }, error =>{
+    //   console.log('error')
+    // })
+  fetch('http://127.0.0.1:5000/',{mode: 'no-cors',method:'GET'})
+  .then(response => {
+    console.log(response) 
+  })
   </script>
+  <div>Hello world</div>
 </body>
 
 </html>
