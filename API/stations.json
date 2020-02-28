@@ -1,0 +1,85 @@
+{
+  "stations": {
+    "Hop1": {
+      "label": "Hop1:"
+    },
+    "Hop2": {
+      "label": "Hop2:"
+    },
+    "Hop3": {
+      "label": "Hop3:"
+    },
+    "Hop4": {
+      "label": "Hop4"
+    },
+    "Hop5": {
+      "label": "Hop5"
+    },
+    "Hop6": {
+      "label": "Hop6"
+    },
+    "Hop7": {
+      "label": "Hop7"
+    }
+
+  },
+  "lines": [
+    {
+      "name":"Line B",
+      "color":"#808000",
+      "shiftCoords": [0, 0],
+      "nodes":[
+      {
+        "coords": [30, -10],
+        "name": "Hop5",
+        "labelPos": "N"
+      },
+      {
+        "coords": [50, -10],
+        "name": "Hop6",
+        "labelPos": "N"
+      },
+      {
+        "coords": [70, -10],
+        "name": "Hop7",
+        "labelPos": "N"
+      }
+      ]
+
+    },
+    {
+      "name": "line A",
+      "color": "#FF0000",
+      "shiftCoords": [0, 0],
+      "nodes": [
+        {
+          "coords": [10, -4],
+          "name": "Hop1",
+          "labelPos": "N"
+        },
+        {
+          "coords": [30, -4]
+        },
+        {
+          "coords": [30, -10],
+          "dir": "N"
+        },
+        {
+          "coords": [30, -4],
+          "name": "Hop2",
+          "labelPos": "N"
+        },
+        {
+        "coords": [40, -4],
+          "name": "Hop3",
+          "labelPos": "N"
+        },
+        {
+        "coords": [70, -4],
+          "name": "Hop4",
+          "labelPos": "N"
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+
 <html>
 
 <head>
@@ -62,6 +63,7 @@
     dataStructure.stations = NewObject
     dataStructure.lines = Lines
     // console.log(JSON.stringify(dataStructure))
+    console.log(dataStructure)
 
 
 
@@ -172,7 +174,7 @@
 
     
       container
-        .datum(stations).call(map);
+        .datum(dataStructure).call(map);
 
       var svg = container.select('svg');
 
@@ -192,16 +194,6 @@
     //     svg.select('g').attr('transform', d3.event.transform.toString());
     //   }
     // ;
-    // axios.fetch('http://127.0.0.1:5000/')
-    // .then( response => {
-    //   console.log(response.todos)
-    // }, error =>{
-    //   console.log('error')
-    // })
-  fetch('http://127.0.0.1:5000/',{mode: 'no-cors',method:'GET'})
-  .then(response => {
-    console.log(response) 
-  })
   </script>
   <div>Hello world</div>
 </body>
