@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="tubeMap.css">
+  <!-- <link rel="stylesheet" href="tubeMap.css"> -->
   <script src="https://d3js.org/d3.v5.js"></script>
   <script src="https://unpkg.com/d3-tube-map@latest/dist/d3-tube-map.js"></script>
    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -15,18 +15,35 @@
   <script>
 
     //Create the same data structure for d3-map-tube
-      const dataHops = [{hop: 1, rtt: 10, ip: '192.168.0.1'}, {hop: 2, rtt: 20, ip: '192.168.0.10'}, {hop: 3, rtt: 30, ip: '192.168.0.100'},{hop: 4, rtt: 50, ip: '192.168.0.120'},{hop: 5, rtt: 60, ip: '192.168.0.120'},{hop: 6, rtt: 70, ip: '192.168.0.120'}]
+      const dataHops = [{hop: 1, rtt: 10, ip: '24.87.208.63'}, {hop: 2, rtt: 20, ip: '24.87.208.63'}, {hop: 3, rtt: 30, ip: '24.87.208.63'},{hop: 4, rtt: 50, ip: '24.87.208.63'},{hop: 5, rtt: 60, ip: '24.87.208.63'},{hop: 6, rtt: 70, ip: '24.87.208.63'}]
     //Declare empty Object 
     const NewObject ={}
     //Map through the hop data 
-    const Map = dataHops.map((dataHop,index) =>{ 
+    const Map = dataHops.map(async(dataHop,index) =>{
+        const API = `http://api.ipstack.com/`+dataHop.ip+`.?access_key=dcdb1481feb9d6a8047135df16028740`
     //Pass the index as an argument in order to use later as the key in the object
         const i = index +1
+    //Define variable for Api key 
         NewObject[i]= {}
+
+   async function axiosTest(){
+      city ={}
+      return axios.get(API)
+      .then(response =>{
+        city = response.data.city
+        console.log(city)
+        return city
+      })
+    }
+  await axiosTest().then((city) =>{
+      NewObject[i].city = city
+      wait()
+    })
         //convert the hop in a string to use the ip adress as the label
-        NewObject[i].label = dataHop.ip.toString()
+        NewObject[i].label = dataHop.city
+
         return NewObject 
-    });
+  });
     // console.log(NewObject)
 
     const Lines =[{
@@ -65,97 +82,8 @@
     // console.log(JSON.stringify(dataStructure))
     console.log(dataStructure)
 
-
-
-
-
-    const stations ={
-  "stations": {
-    "Hop1": {
-      "label": "Hop1:"
-    },
-    "Hop2": {
-      "label": "Hop2:"
-    },
-    "Hop3": {
-      "label": "Hop3:"
-    },
-    "Hop4": {
-      "label": "Hop4"
-    },
-    "Hop5": {
-      "label": "Hop5"
-    },
-    "Hop6": {
-      "label": "Hop6"
-    },
-    "Hop7": {
-      "label": "Hop7"
-    },
-
-  },
-  "lines": [
-    {
-      "name":"Line B",
-      "color":"#808000",
-      "shiftCoords": [0, 0],
-      "nodes":[
-      {
-        "coords": [30, -10],
-        "name": "Hop5",
-        "labelPos": "N"
-      },
-      {
-        "coords": [50, -10],
-        "name": "Hop6",
-        "labelPos": "N"
-      },
-      {
-        "coords": [70, -10],
-        "name": "Hop7",
-        "labelPos": "N"
-      },
-      ]
-
-    },
-    {
-      "name": "line A",
-      "color": "#FF0000",
-      "shiftCoords": [0, 0],
-      "nodes": [
-        {
-          "coords": [10, -4],
-          "name": "Hop1",
-          "labelPos": "N"
-        },
-        {
-          "coords": [30, -4]
-        },
-        {
-          "coords": [30, -10],
-          "dir": "N"
-        },
-        {
-          "coords": [30, -4],
-          "name": "Hop2",
-          "labelPos": "N"
-        },
-        {
-        "coords": [40, -4],
-          "name": "Hop3",
-          "labelPos": "N"
-        },
-        {
-        "coords": [70, -4],
-          "name": "Hop4",
-          "labelPos": "N"
-        },
-      ]
-    }
-  ]
-}
-  
-    var container = d3.select('#tube-map');
+    function wait (){
+          var container = d3.select('#tube-map');
     var width = 1200;
     var height = 900;
 
@@ -178,8 +106,10 @@
 
       var svg = container.select('svg');
 
+    }
+
       // zoom = d3
-      //   .zoom()
+      //   .zoom() n
       //   .scaleExtent([0.5, 6])
       //   .on('zoom', zoomed);
 
@@ -194,6 +124,13 @@
     //     svg.select('g').attr('transform', d3.event.transform.toString());
     //   }
     // ;
+//   const API = `http://api.ipstack.com/`+dataStructure.stations.ip+`.?access_key=dcdb1481feb9d6a8047135df16028740`
+
+//  axios.get(API)
+//  .then(responses =>{
+//    console.log(responses.data)
+//  })
+
   </script>
   <div>Hello world</div>
 </body>
