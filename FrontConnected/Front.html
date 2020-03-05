@@ -1,4 +1,4 @@
-<html>
+<!-- <html>
 
 <head>
   <link rel="stylesheet" href="tubeMap.css">
@@ -44,15 +44,15 @@ let apiTwo =''
             console.log (defaultPosition)
         })
       })
-      const promises = []
+    const promises = []
     response.data.map((item, index)=>{
       
       apiTwo = `http://api.ipstack.com/`+item.ip+`?access_key=dcdb1481feb9d6a8047135df16028740`
       promises.push( axios.get(apiTwo)
       .then(response =>{
         NewObject[index.toString()]['label'] = response.data.city
-        console.log(NewObject)
       }))
+      console.log(promises)
     })
     Promise.all(promises).then(() => {
       response.data.map((dataHop,index)=>{
@@ -130,7 +130,7 @@ let apiTwo =''
   <div>Hello world</div>
 </body>
 
-</html>
+</html> -->
 
 
 <!-- CODE WORKING WITH THE BACK END  -->
@@ -243,3 +243,111 @@ let apiTwo =''
 </body>
 
 </html> -->
+
+<!-- //Tesst// -->
+<html>
+
+<head>
+  <link rel="stylesheet" href="tubeMap.css">
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://unpkg.com/d3-tube-map@latest/dist/d3-tube-map.js"></script>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div id="tube-map">
+  </div>
+  <script>
+
+//Get the data from the node back end/
+
+//API BACK END//
+const apiOne = 'http://localhost:8080/'
+//API FROM API DATA//
+let city = []
+  function Data () {
+        const NewObject ={}
+        const dataStructure ={}
+        const Lines =[{
+              "name":"line",
+              "color": "#FF0000",
+              "shiftCoords": [0, 0],
+              "nodes":[]
+        }]
+        const defaultPosition = 'N'
+    
+    axios.get(apiOne)
+    .then ( responseOne => {
+        //Map through the hop data 
+      responseOne.data.map((dataHop,index)=>{
+        const i = index +1
+        NewObject[i]={}
+        //convert the hop in a string to use the ip adress as the label
+        NewObject[i].label = dataHop.ip.toString()
+        NewObject[i].labelPos = defaultPosition
+        NewObject[i].labelShiftX = 0
+        NewObject[i].labelShiftY = 0
+        city.push(axios.get(`http://api.ipstack.com/`+dataHop.ip+`.?access_key=dcdb1481feb9d6a8047135df16028740`))
+
+        console.log(city)
+
+      })
+      axios.all(city)
+      .then(response =>{
+        response.map((ip,index) =>{
+          const i = index +1
+          NewObject[i].label =ip.data.city
+        })
+        console.log(Response)
+        responseOne.data.map((dataHop,index)=>{
+          const length = responseOne.data.length
+          const i = index
+
+        const positionLine = Lines.map(Line =>{
+            const position = 100 / length * dataHop.hop 
+            Lines[0].nodes[i] ={}
+            Lines[0].nodes[i].coords = [position,-4]
+            //convert the index position in a string
+            Lines[0].nodes[i].name = (i+1).toString()
+            Lines[0].nodes[i].labelPos = defaultPosition
+            console.log (defaultPosition)
+        })
+      })
+      dataStructure.stations = NewObject
+      dataStructure.lines = Lines
+      var container = d3.select('#tube-map');
+      var width = 1200;
+      var height = 900;
+
+    var map = d3.tubeMap()
+      .width(width)
+      .height(height)
+      .margin({
+        top: 300,
+        right: 20,
+        bottom: 40,
+        left: 100,
+      })
+      .on("click", function (name) {
+        console.log(name);
+      });
+
+    
+      container
+        .datum(dataStructure).call(map);
+
+      var svg = container.select('svg');
+    })
+
+    }, error =>{
+      console.log('error')
+    }
+    )
+  }
+ Data()
+  </script>
+  <div>Hello world</div>
+</body>
+
+</html>
