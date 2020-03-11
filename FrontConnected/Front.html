@@ -65,7 +65,7 @@ let city = []
       .then(response =>{
         response.map((ip,index) =>{
           const i = index +1
-          NewObject[i].label =ip.data.location.isoPrincipalSubdivision || ip.data.country.name
+          NewObject[i].label =ip.data.location.city || ip.data.network.registeredCountry || ip.data.ip
         })
         console.log(Response)
         responseOne.data.map((dataHop,index)=>{
