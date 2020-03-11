@@ -1,116 +1,4 @@
 
-
-<!-- CODE WORKING WITH THE BACK END  -->
-<!-- <html>
-
-<head>
-  <link rel="stylesheet" href="tubeMap.css">
-  <script src="https://d3js.org/d3.v5.js"></script>
-  <script src="https://unpkg.com/d3-tube-map@latest/dist/d3-tube-map.js"></script>
-   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
-</head>
-
-<body>
-  <div id="tube-map">
-  </div>
-  <script>
-
-//Get the data from the node back end/
-  function Data () {
-        const NewObject ={}
-        const dataStructure ={}
-        const Lines =[{
-              "name":"line",
-              "color": "#FF0000",
-              "shiftCoords": [0, 0],
-              "nodes":[]
-        }]
-        const defaultPosition = 'N'
-    
-    return axios.get('http://localhost:8080/')
-    .then( response => {
-        //Map through the hop data 
-      response.data.map((dataHop,index)=>{
-        const i = index +1
-        NewObject[i]={}
-        //convert the hop in a string to use the ip adress as the label
-        NewObject[i].label = dataHop.ip.toString()
-        NewObject[i].labelPos = defaultPosition
-        NewObject[i].labelShiftX = 0
-         NewObject[i].labelShiftY = 0
-
-      })
-      response.data.map((dataHop,index)=>{
-        const length = response.data.length
-        const i = index
-
-        const positionLine = Lines.map(Line =>{
-            const position = 100 / length * dataHop.hop 
-            Lines[0].nodes[i] ={}
-            Lines[0].nodes[i].coords = [position,-4]
-            //convert the index position in a string
-            Lines[0].nodes[i].name = (i+1).toString()
-            Lines[0].nodes[i].labelPos = defaultPosition
-            console.log (defaultPosition)
-        })
-      })
-    dataStructure.stations = NewObject
-    dataStructure.lines = Lines
-    return dataStructure
-
-    }, error =>{
-      console.log('error')
-    }
-    )
- }
- Data().then((dataStructure)=>{ console.log(dataStructure)
-       var container = d3.select('#tube-map');
-    var width = 1200;
-    var height = 900;
-
-    var map = d3.tubeMap()
-      .width(width)
-      .height(height)
-      .margin({
-        top: 300,
-        right: 20,
-        bottom: 40,
-        left: 100,
-      })
-      .on("click", function (name) {
-        console.log(name);
-      });
-
-    
-      container
-        .datum(dataStructure).call(map);
-
-      var svg = container.select('svg');
-
-      // zoom = d3
-      //   .zoom()
-      //   .scaleExtent([0.5, 6])
-      //   .on('zoom', zoomed);
-
-      // var zoomContainer = svg.call(zoom);
-      // var initialScale = 2;
-      // var initialTranslate = [100, 200];
-
-      // zoom.scaleTo(zoomContainer, initialScale);
-      // zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
-
-      // function zoomed() {
-      //   svg.select('g').attr('transform', d3.event.transform.toString());
-      // }
-    ;
- })
-  </script>
-  <div>Hello world</div>
-</body>
-
-</html> -->
-
 <!-- //City name working using IP DATA// -->
 <html>
 
@@ -121,6 +9,20 @@
    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
 </head>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+text {
+  font-family: 'Hammersmith One', sans-serif;
+  fill: #0019A8;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: normal;
+}
+</style>
 
 <body>
   <div id="tube-map">
@@ -155,8 +57,7 @@ let city = []
         NewObject[i].labelPos = defaultPosition
         NewObject[i].labelShiftX = 0
         NewObject[i].labelShiftY = 0
-        city.push(axios.get(`http://api.ipstack.com/`+dataHop.ip+`.?access_key=dcdb1481feb9d6a8047135df16028740`))
-
+        city.push(axios.get(`https://api.bigdatacloud.net/data/ip-geolocation-full?ip=`+dataHop.ip+`&localityLanguage=en&key=98ccac279ffd4652a509079a821f93d2`))
         console.log(city)
 
       })
@@ -164,7 +65,7 @@ let city = []
       .then(response =>{
         response.map((ip,index) =>{
           const i = index +1
-          NewObject[i].label =ip.data.city
+          NewObject[i].label =ip.data.location.isoPrincipalSubdivision || ip.data.country.name
         })
         console.log(Response)
         responseOne.data.map((dataHop,index)=>{
@@ -213,10 +114,6 @@ let city = []
     )
   }
  Data()
-  axios.get(`https://api.ipdata.co/192.102.255.80?api-key=addc1486d639f37bc063214e74dea06a2040acea9b1b28268b67e411`)
-    .then( response =>{
-      console.log(response)
-    })
   </script>
   <div>Hello world</div>
 </body>
