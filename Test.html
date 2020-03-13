@@ -1,0 +1,62 @@
+<html>
+    <head>
+        
+    </head>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="../dist/d3-tube-map.js"></script>
+ 
+<script>
+let station ={
+  "stations": {
+    "StationA": {
+      "label": "Station A"
+    },
+    "StationB": {
+      "label": "Station B"
+    }
+  },
+  "lines": [
+    {
+      "name": "LineA",
+      "color": "#FF0000",
+      "shiftCoords": [0, 0],
+      "nodes": [
+        {
+          "coords": [23, -4],
+          "name": "StationA",
+          "labelPos": "N"
+        },
+        {
+          "coords": [30, -4]
+        },
+        {
+          "coords": [31, -3],
+          "dir": "E"
+        },
+        {
+          "coords": [31, 2],
+          "name": "StationB",
+          "labelPos": "E"
+        }
+      ]
+    }
+  ]
+}
+  var container = d3.select('#tube-map');
+ 
+  var width = 1600;
+  var height = 1024;
+ 
+  var map = d3.tubeMap(station)
+    .width(width)
+    .height(height)
+    .margin({
+      top: height / 50,
+      right: width / 7,
+      bottom: height / 10,
+      left: width / 7,
+    });
+ 
+  d3.json("./pubs.json").then(function(data)  {
+    container.datum(data).call(map);
+  });

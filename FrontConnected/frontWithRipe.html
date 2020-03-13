@@ -1,4 +1,3 @@
-
 <!-- //City name working using IP DATA// -->
 <html>
 
@@ -32,7 +31,7 @@ text {
 //Get the data from the node back end/
 
 //API BACK END//
-const apiOne = 'http://localhost:8080'
+const apiOne = 'http://localhost:8080/ping'
 //API FROM API DATA//
 let city = []
   function Data () {
@@ -47,39 +46,47 @@ let city = []
         const defaultPosition = 'N'
     
     axios.get(apiOne)
-    .then ( responseOne  => {
-        //Map through the hop data 
-      responseOne.data.map((dataHop,index)=>{
-        const i = index +1
+    .then (response  => {
+        responseOne = JSON.parse(response.data)
+        console.log(responseOne)
+        responseOne.map( prob =>{
+            //Map through the hop data 
+        console.log(prob)
+        prob.result.map((dataHop,index)=>{
+        const i = index
         NewObject[i]={}
         //convert the hop in a string to use the ip adress as the label
-        NewObject[i].label = dataHop.ip.toString()
+        NewObject[i].label = dataHop.result[0].from||dataHop.result[1].x
         NewObject[i].labelPos = defaultPosition
         NewObject[i].labelShiftX = 0
         NewObject[i].labelShiftY = 0
-        city.push(axios.get(`https://api.bigdatacloud.net/data/ip-geolocation-full?ip=`+dataHop.ip+`&localityLanguage=en&key=98ccac279ffd4652a509079a821f93d2`))
-        console.log(city)
+        if (dataHop.result[0].from){
+          city.push(axios.get(`https://api.bigdatacloud.net/data/ip-geolocation-full?ip=`+dataHop.result[0].from +`&localityLanguage=en&key=98ccac279ffd4652a509079a821f93d2`))  
+        }else{
+            city.push(async()=>{
+                return{}
+            })
+        }
 
       })
       axios.all(city)
       .then(response =>{
         response.map((ip,index) =>{
-          const i = index +1
-          NewObject[i].label =ip.data.location.city || ip.data.network.registeredCountry || ip.data.ip
+          const i = index
+          NewObject[i].label = ip.data ?(ip.data.location ?ip.data.location.city  : ip.data.network.registeredCountry):'No Label found'
         })
-        console.log(Response)
-        responseOne.data.map((dataHop,index)=>{
-          const length = responseOne.data.length
+        console.log('response',response)
+        responseOne.map((dataHop,index)=>{
+          const length = responseOne.length
           const i = index
 
-        const positionLine = Lines.map(Line =>{
-            const position = 100 / length * dataHop.hop 
+        const positionLine = Lines.map((Line,index) =>{
+            const position = 100 / length * dataHop.hop
             Lines[0].nodes[i] ={}
             Lines[0].nodes[i].coords = [position,-4]
             //convert the index position in a string
             Lines[0].nodes[i].name = (i+1).toString()
             Lines[0].nodes[i].labelPos = defaultPosition
-            console.log (defaultPosition)
         })
       })
       dataStructure.stations = NewObject
@@ -112,6 +119,9 @@ let city = []
       console.log('error')
     }
     )
+
+        })
+        
   }
  Data()
 //  axios.get('http://localhost:8080/ping')

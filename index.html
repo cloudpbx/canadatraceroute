@@ -20,7 +20,6 @@
     const NewObject ={}
     //Map through the hop data 
     const Map = dataHops.map(async(dataHop,index) =>{
-        const API = `https://api.ipdata.com/`+dataHop.ip+`.addc1486d639f37bc063214e74dea06a2040acea9b1b28268b67e411`
     //Pass the index as an argument in order to use later as the key in the object
         const i = index +1
     //Define variable for Api key 
@@ -102,7 +101,7 @@
 
     
       container
-        .datum(dataStructure).call(map);
+        .datum(dataHops).call(map);
 
       var svg = container.select('svg');
 
