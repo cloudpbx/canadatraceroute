@@ -2,8 +2,6 @@ var express = require('express'),
 app = express(),
 PORT = process.env.PORT || 8080;
 const cors = require('cors')
-const bodyParser = require('body-parser');
-const stations = require('./stations');
 const data = require('./data');
 var request = require("request");
 
