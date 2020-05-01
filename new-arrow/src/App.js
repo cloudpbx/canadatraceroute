@@ -67,10 +67,10 @@ const Fetch = ({pings,pings2}) =>{
         {pings.map((ping)=>
         <div>{ping.result.map((hop)=>{
           return(
-            <ArcherElement style={space} relations={[{
+            <ArcherElement style={space} id={hop.hop} relations={[{
               targetId:`${hop.hop}`,
-              targetAnchor:'top',
-              sourceAnchor:'bottom',
+              targetAnchor:'bottom',
+              sourceAnchor:'top',
 
             }]}>
             <div style={hopStyle}>Hop:{hop.hop}</div>
@@ -80,7 +80,7 @@ const Fetch = ({pings,pings2}) =>{
         )}
         </div>
         <div style={rootStyle}>
-          <ArcherElement id="1">
+          <ArcherElement id="destionation">
             <div>
               <img style={iconStyle} src="../assets/google.png" alt="google"/>
               <h2>Destination</h2>
