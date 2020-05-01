@@ -3,10 +3,10 @@ import './App.css';
 import { ArcherContainer, ArcherElement } from 'react-archer';
 import {RIPES} from './data/Ripe'
 
-const boxStyle = { padding: '10px', border: '1px solid black', borderRadius:50, width:'130px', backgroundColor:'#202020',color:'white' };
+const boxStyle = { padding: '10px', borderRadius:50, width:'130px', backgroundColor:'#323232',color:'white' };
 const hopStyle ={width:'50px', height:'50px',borderRadius:25,backgroundColor:'#d6afd6', display:'flex',justifyContent:'center',flexDirection:'column'}
 const rootStyle = { display: 'flex', justifyContent: 'center', marginTop:10};
-const rowStyle = { marginTop:50, display: 'flex', justifyContent: 'space-between' }
+const rowStyle = { marginTop:50, display: 'flex', justifyContent: 'space-between', color:'#871f78' }
 const space={marginTop:50}
 const iconStyle={width:'70px'}
 
@@ -59,7 +59,7 @@ const Fetch = ({pings,pings2}) =>{
             sourceAnchor:'bottom',
 
           }]}>
-            <div style={boxStyle}>Ip:{ping.from}</div>
+            <div style={boxStyle}>{ping.from}</div>
           </ArcherElement>
         ))}
       </div>
