@@ -3,9 +3,11 @@ import './App.css';
 import { ArcherContainer, ArcherElement } from 'react-archer';
 import {RIPES} from './data/Ripe'
 
-const boxStyle = { padding: '10px', border: '1px solid black', borderRadius:50, width:'200px', backgroundColor:'#C0C0C0' };
+const boxStyle = { padding: '10px', border: '1px solid black', borderRadius:50, width:'130px', backgroundColor:'#202020',color:'white' };
+const hopStyle ={width:'50px', height:'50px',borderRadius:25,backgroundColor:'#d6afd6', display:'flex',justifyContent:'center',flexDirection:'column'}
 const rootStyle = { display: 'flex', justifyContent: 'center', marginTop:10};
 const rowStyle = { marginTop:50, display: 'flex', justifyContent: 'space-between' }
+const space={marginTop:50}
 
 
 const Fetch = ({pings,pings2}) =>{
@@ -46,19 +48,53 @@ const Fetch = ({pings,pings2}) =>{
 
 //   )
 
+  return (
+    <ArcherContainer>
+      <div style={rootStyle}>
+        {pings.map((ping)=>(
+          <ArcherElement id={ping.from} relations={[{
+            targetAnchor:'top',
+            sourceAnchor:'bottom',
+
+          }]}>
+            <div style={boxStyle}>Ip:{ping.from}</div>
+          </ArcherElement>
+        ))}
+      </div>
+      <div style={rowStyle}>
+        {pings.map((ping)=>
+        <div>{ping.result.map((hop)=>{
+          const Id = hop.hop.toString()
+          console.log(Id)
+          return(
+            <ArcherElement style={space} relations={[{
+              targetId:{Id},
+              targetAnchor:'top',
+              sourceAnchor:'bottom',
+
+            }]}>
+            <div style={hopStyle}>Hop:{hop.hop}</div>
+          </ArcherElement>
+          )
+        })}</div>
+        )}
+      </div>
+    </ArcherContainer>
+  )
+
 //root side by side//
-return(
-  <ArcherContainer>
-    <div style={rootStyle}>
-      <ArcherElement>
-        <div>yanis</div>
-      </ArcherElement>
-      <ArcherElement>
-        <div>yanis</div>
-      </ArcherElement>
-    </div>
-  </ArcherContainer>
-)
+// return(
+//   <ArcherContainer>
+//     <div style={rootStyle}>
+//       <ArcherElement>
+//         <div>yanis</div>
+//       </ArcherElement>
+//       <ArcherElement>
+//         <div>yanis</div>
+//       </ArcherElement>
+//     </div>
+//   </ArcherContainer>
+// )
 }
 
 // {/* <ArcherElement id={hop.hop} relations={[{
