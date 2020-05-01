@@ -8,6 +8,7 @@ const hopStyle ={width:'50px', height:'50px',borderRadius:25,backgroundColor:'#d
 const rootStyle = { display: 'flex', justifyContent: 'center', marginTop:10};
 const rowStyle = { marginTop:50, display: 'flex', justifyContent: 'space-between' }
 const space={marginTop:50}
+const iconStyle={width:'70px'}
 
 
 const Fetch = ({pings,pings2}) =>{
@@ -52,7 +53,8 @@ const Fetch = ({pings,pings2}) =>{
     <ArcherContainer>
       <div style={rootStyle}>
         {pings.map((ping)=>(
-          <ArcherElement id={ping.from} relations={[{
+          <ArcherElement id={ping.from} relations={[{ 
+            targetId:'1',
             targetAnchor:'top',
             sourceAnchor:'bottom',
 
@@ -64,11 +66,9 @@ const Fetch = ({pings,pings2}) =>{
       <div style={rowStyle}>
         {pings.map((ping)=>
         <div>{ping.result.map((hop)=>{
-          const Id = hop.hop.toString()
-          console.log(Id)
           return(
             <ArcherElement style={space} relations={[{
-              targetId:{Id},
+              targetId:`${hop.hop}`,
               targetAnchor:'top',
               sourceAnchor:'bottom',
 
@@ -78,7 +78,15 @@ const Fetch = ({pings,pings2}) =>{
           )
         })}</div>
         )}
-      </div>
+        </div>
+        <div style={rootStyle}>
+          <ArcherElement id="1">
+            <div>
+              <img style={iconStyle} src="../assets/google.png" alt="google"/>
+              <h2>Destination</h2>
+            </div>
+          </ArcherElement>
+        </div>
     </ArcherContainer>
   )
 
