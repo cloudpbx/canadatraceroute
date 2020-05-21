@@ -11,50 +11,15 @@ const space={marginTop:50}
 const iconStyle={width:'70px'}
 
 
-const Fetch = ({pings,pings2}) =>{
-//   return(
-//           <ArcherContainer>
-//             {pings.map((ping)=>
-//             <div style={rootStyle}>
-//               <ArcherElement id={ping.from} relations={[{
-//                 targetId:'1',
-//                 targetAnchor:'top',
-//                 sourceAnchor:'bottom',
-//               }]}>
-//                 <div style={boxStyle}>Ip:{ping.from}</div>
-//               </ArcherElement>
-//               <div>
-//                 {ping.result.map((hop) =>{
-//                   console.log(hop)
-//                   const Id = hop.hop.toString()
-//                   return(
-//                     <div style={rowStyle}>
-//                     <ArcherElement id={Id} relations={[{
-//                       targetId:{Id},
-//                       targetAnchor:'top',
-//                       sourceAnchor:'bottom',
 
-//                     }]}>
-//                       <div style={boxStyle}>Hop{hop.hop}{hop.result.map((ip)=>
-//                         <p>{ip.from}</p>
-//                       )}</div>
-//                     </ArcherElement>
-//                   </div>
-//                   )})}
-//               </div>
-//             </div>
 
-//             )}
-// </ArcherContainer>
-
-//   )
-
+const Fetch = ({pings}) =>{
   return (
     <ArcherContainer>
       <div style={rootStyle}>
         {pings.map((ping)=>(
-          <ArcherElement id={ping.from} relations={[{ 
-            targetId:'1',
+          <ArcherElement key={ping.from} id={ping.from} relations={[{ 
+            targetId:ping.result[0].result[0].from,
             targetAnchor:'top',
             sourceAnchor:'bottom',
 
@@ -67,8 +32,8 @@ const Fetch = ({pings,pings2}) =>{
         {pings.map((ping)=>
         <div>{ping.result.map((hop)=>{
           return(
-            <ArcherElement style={space} id={hop.hop} relations={[{
-              targetId:`${hop.hop}`,
+            <ArcherElement key={hop.hop} style={space} id={hop.result[0].from} relations={[{
+              targetId:`${hop.result[0].from}`,
               targetAnchor:'bottom',
               sourceAnchor:'top',
 
@@ -121,10 +86,20 @@ export default class App extends Component {
     super(props)
     this.state={
       pings:RIPES,
-      pings2:RIPES,
 
     }
   }
+
+  render(){  
+    console.log(this.state.pings)
+    return(
+      <div className="App">
+      <Fetch pings={this.state.pings}></Fetch>
+    </div>
+    )
+  }
+}
+
 
 
 
@@ -136,13 +111,4 @@ export default class App extends Component {
 
   // }
 
-  render(){  
-    console.log(this.state.pings)
-    return(
-      <div className="App">
-      <Fetch pings={this.state.pings} pings2={this.state.pings2}></Fetch>
-    </div>
-    )
-  }
 
-}
